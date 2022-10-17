@@ -17,11 +17,11 @@ app.layout = dbc.Container(children=[
         dbc.Col([
             dcc.Location(id='url'), 
             infos.layout
-        ], md=2), # ocupa 2/12 da página
+        ], md=3), # ocupa 2/12 da página
         dbc.Col([
             menu.layout,
             content
-        ], md=10) # ocupa 10/12 da página
+        ], md=9) # ocupa 10/12 da página
     ])
 ], fluid=True)
 
