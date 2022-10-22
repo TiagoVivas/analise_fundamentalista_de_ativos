@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.express as px
 
 from app import app
-from components import infos, menu, cotacao, dividendos, financas, balanco, fluxo, indicadores, expectativas
+from components import infos, menu, cotacao, dividendos, financas, balanco, indicadores, expectativas
 
 # ============ Layout ============ #
 content = html.Div(id="page-content")
@@ -46,10 +46,6 @@ def render_page(pathname):
     # Página de balanço
     if pathname == '/balanco':
         return balanco.layout
-
-    # Página de fluxo
-    if pathname == '/fluxo':
-        return fluxo.layout
 
     # Página de indicadores
     if pathname == '/indicadores':

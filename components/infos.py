@@ -128,7 +128,8 @@ layout = dbc.Col([
 # Seção Polêmicas ------------------------------
     html.Label("Envolvimento em polêmicas",
                style={'font-size': 18, 'width': '100%'}),
-    html.Label("- Polêmicas...",
+    
+    html.Label("- Polêmica 1... \n - Polêmica 2...",
                id='infos-polemicas',
                style={'font-size': 18})
 
