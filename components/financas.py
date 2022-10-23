@@ -71,4 +71,8 @@ Ebit (receita total - custo dos produtos vendidos) > Ebit
 Lucro bruto > Gross Profit
 Lucro antes dos impostos > Income Before Tax
 Lucro líquido > Net Income
+
+Margem bruta > yq.financial_data.grossMargins
+Margem operacional > yq.financial_data.operatingMargins
+Margem líquida > yq.financial_data.profitMargins
 """

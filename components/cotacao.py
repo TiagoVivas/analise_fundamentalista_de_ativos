@@ -42,7 +42,7 @@ layout = dbc.Col([
         ], width=3),
 # Seção gráfico -------------------------
         dbc.Col([
-            dbc.Card([
+                dbc.Card([
                     dcc.Graph(id='cotacao-grafico')
                 ], style={'height': '100%', 'padding': '10px'})
         ], width=9)
