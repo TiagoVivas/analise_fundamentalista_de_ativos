@@ -8,11 +8,19 @@ import plotly.express as px
 
 from app import app
 from components import infos, menu, cotacao, dividendos, financas, balanco, indicadores, expectativas
+from globals import *
 
 # ============ Layout ============ #
 content = html.Div(id="page-content")
 
 app.layout = dbc.Container(children=[
+# Componentes para armazenar dados -----------------------------
+    dcc.Store(id='store_ativos',
+              data=lista_de_ativos),
+    dcc.Store(id='store_infos',
+              data=df_infos.to_dict()),
+
+# Componentes de layout da página ------------------------------
     dbc.Row([
         dbc.Col([
             dcc.Location(id='url'), 
