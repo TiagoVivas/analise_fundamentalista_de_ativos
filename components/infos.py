@@ -5,14 +5,19 @@ from dash.exceptions import PreventUpdate
 
 import datetime
 from dateutil.relativedelta import relativedelta
-
-from app import app
-from globals import *
+import os, base64, io
+import urllib.request
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 import yfinance as yf
 import yahooquery as yq 
 
-import pdb
+from app import app
+from globals import *
 
 # =============== Layout =============== #
 layout = dbc.Col([
@@ -27,7 +32,7 @@ layout = dbc.Col([
                               placeholder="Selecione um ativo...",
                               multi=False,
                               style={'width': '100%', 'align': 'left'})),
-        html.Label("Nome da empresa...",
+        html.Label(".",
                    id='infos_nome_empresa',
                    style={'font-size': 18, 'width': '100%'}),
         dbc.Row([
@@ -39,10 +44,10 @@ layout = dbc.Col([
                                     ], style={'background-color': 'transparent', 'border-color': 'transparent'}),
             ], width=5),
             dbc.Col([
-                html.Label("Data... ",
+                html.Label("",
                            id='infos_data_preco',
                            style={'font-size': 18, 'width': '100%', 'textAlign': 'center'}),
-                html.Label("R$ ...",
+                html.Label("",
                            id='infos_preco',
                            style={'font-size': 18, 'width': '100%', 'textAlign': 'center'}),
             ], width=7)
@@ -53,10 +58,10 @@ layout = dbc.Col([
 
 # Seção setor e informações gerais ------------------
     dbc.Row([
-        html.Label("Setor X...",
+        html.Label("Setor",
                    id='infos_setor',
                    style={'font-size': 18, 'width': '100%', 'textAlign': 'center'}),
-        html.Label("Indústria X...",
+        html.Label("Indústria",
                    id='infos_industria',
                    style={'font-size': 18, 'width': '100%', 'textAlign': 'center'}),
         dbc.Col([
@@ -66,10 +71,10 @@ layout = dbc.Col([
                        style={'font-size': 18, 'width': '100%'})
         ], width=8),
         dbc.Col([
-            html.Label("R$ X...",
+            html.Label("",
                        id='infos_valor_mercado',
                        style={'font-size': 18, 'width': '100%'}),
-            html.Label("X...",
+            html.Label("",
                        id='infos_funcionarios',
                        style={'font-size': 18, 'width': '100%'})
         ], width=4),
@@ -79,24 +84,24 @@ layout = dbc.Col([
 # Seção dividendos e payout ------------------
     dbc.Row([
         dbc.Col([
-            html.Label("12 meses: ",
+            html.Label("Div. 12 meses: ",
                        style={'font-size': 18, 'width': '100%'}),
             html.Label("Data COM: ",
                        style={'font-size': 18, 'width': '100%'}),
             html.Label("Payout: ",
                        style={'font-size': 18, 'width': '100%'})
-        ], width=6),
+        ], width=5),
         dbc.Col([
-            html.Label("R$ X... / Y... %",
+            html.Label("",
                        id='infos_dividendos_yield',
-                       style={'font-size': 22, 'width': '100%'}),
-            html.Label("Data...",
+                       style={'font-size': 20, 'width': '100%'}),
+            html.Label("",
                        id='infos_data_com',
                        style={'font-size': 18, 'width': '100%'}),
-            html.Label("X...%",
+            html.Label("",
                        id='infos_payout',
                        style={'font-size': 18, 'width': '100%'})
-        ], width=6),
+        ], width=7),
         html.Hr()
     ]),
 
@@ -111,29 +116,29 @@ layout = dbc.Col([
                        style={'font-size': 18, 'width': '100%', 'padding-bottom': '5px'}),
             html.Label("Governança: ",
                        style={'font-size': 18, 'width': '100%'})
-        ], width=6), 
+        ], width=5), 
         dbc.Col([
-            dbc.Label([html.Img(src='/assets/esg_padrao.png',
+            dbc.Label([html.Img(src='/assets/blanck.png',
                                 id='infos_esg_total',
                                 alt='Avatar',
-                                style={'height': '20px', 'width': '120px'})
+                                style={'height': '25px', 'width': '180px'})
                                 ], style={'background-color': 'transparent', 'border-color': 'transparent'}),
-            dbc.Label([html.Img(src='/assets/esg_padrao.png',
+            dbc.Label([html.Img(src='/assets/blanck.png',
                                 id='infos_esg_ambiental',
                                 alt='Avatar',
-                                style={'height': '20px', 'width': '120px'})
+                                style={'height': '25px', 'width': '180px'})
                                 ], style={'background-color': 'transparent', 'border-color': 'transparent'}),
-            dbc.Label([html.Img(src='/assets/esg_padrao.png',
+            dbc.Label([html.Img(src='/assets/blanck.png',
                                 id='infos_esg_social',
                                 alt='Avatar',
-                                style={'height': '20px', 'width': '120px'})
+                                style={'height': '25px', 'width': '180px'})
                                 ], style={'background-color': 'transparent', 'border-color': 'transparent'}),
-            dbc.Label([html.Img(src='/assets/esg_padrao.png',
+            dbc.Label([html.Img(src='/assets/blanck.png',
                                 id='infos_esg_governanca',
                                 alt='Avatar',
-                                style={'height': '20px', 'width': '120px'})
+                                style={'height': '25px', 'width': '180px'})
                                 ], style={'background-color': 'transparent', 'border-color': 'transparent'})
-        ], width=6),
+        ], width=7),
         html.Hr()
     ]),
 
@@ -141,7 +146,7 @@ layout = dbc.Col([
     html.Label("Envolvimento em polêmicas",
                style={'font-size': 18, 'width': '100%'}),
     
-    html.Label("- Polêmica 1... \n - Polêmica 2...",
+    html.Label("",
                id='infos_polemicas',
                style={'font-size': 18})
 
@@ -304,3 +309,202 @@ def atualiza_dados_info(ativo, dados_info):
         df_infos.to_csv('df_infos.csv')
 
     return df_infos.to_dict()
+
+@app.callback(
+    [
+        Output('infos_nome_empresa', 'children'),
+        Output('infos_data_preco', 'children'),
+        Output('infos_preco', 'children'),
+        Output('infos_logo', 'src'),
+        Output('infos_setor', 'children'),
+        Output('infos_industria', 'children'),
+        Output('infos_valor_mercado', 'children'),
+        Output('infos_funcionarios', 'children'),
+        Output('infos_dividendos_yield', 'children'),
+        Output('infos_data_com', 'children'),
+        Output('infos_payout', 'children'),
+        Output('infos_esg_total', 'src'),
+        Output('infos_esg_ambiental', 'src'),
+        Output('infos_esg_social', 'src'),
+        Output('infos_esg_governanca', 'src'),
+        Output('infos_polemicas', 'children')
+    ],
+    Input('store_infos', 'data'),
+    State('infos_selecao_ativo', 'value')
+)
+def mostra_valores_infos(dados_info, ativo):
+    if ativo is None: # Pula primeira execução ao iniciar aplicação
+        raise PreventUpdate
+
+    df_infos = pd.DataFrame(dados_info)
+    df_infos_ativo = df_infos[df_infos['ativo'] == ativo]
+
+    # Nome da empresa
+    nome = df_infos_ativo['nome'].values
+    nome = nome[0] if len(nome) != 0 else ''
+
+    # Data do último negócio
+    data = df_infos_ativo['data'].values
+    if len(data) != 0:
+        data = data[0]
+        data = data[8:10] + '/' + data[5:7] + '/' + data[0:4]
+    else:
+        data = ''
+
+    # Último preço de mercado
+    preco = df_infos_ativo['preco'].values
+    preco = preco[0] if len(preco) != 0 else ''
+    preco = 'R$ ' + str(round(preco, 2)).replace('.', ',')
+
+    # Logo da empresa
+    logo = f"logo_{ativo}.png"
+    if logo not in os.listdir('assets/'):
+        try:
+            url_logo = df_infos_ativo['logo'].values
+            url_logo = url_logo[0] if len(url_logo) != 0 else ''
+            urllib.request.urlretrieve(url_logo, f"assets/{logo}")
+        except:
+            logo = 'logo_padrao.png'
+
+    # Setor de atuação
+    setor = df_infos_ativo['setor'].values
+    setor = setor[0] if len(setor) != 0 else ''
+
+    # Indústria de atuação
+    industria = df_infos_ativo['industria'].values
+    industria = industria[0] if len(industria) != 0 else ''
+
+    # Valor de mercado
+    valor_mercado = df_infos_ativo['valor_mercado'].values
+    valor_mercado = valor_mercado[0] if len(valor_mercado) != 0 else ''
+    valor_mercado = 'R$ ' + str(round(valor_mercado/1000000000, 1)).replace('.', ',') + ' B'
+
+    # Qtd de funcionários
+    funcionarios = df_infos_ativo['funcionarios'].values
+    funcionarios = funcionarios[0] if len(funcionarios) != 0 else ''
+
+    # Dividendos
+    dividendos = df_infos_ativo['proventos_12_meses'].values
+    dividendos = dividendos[0] if len(dividendos) != 0 else ''
+
+    div_yield = df_infos_ativo['div_12_meses'].values
+    div_yield = div_yield[0] if len(div_yield) != 0 else ''
+
+    dividendos = f"R$ {str(round(dividendos,2)).replace('.', ',')} / {str(round(div_yield, 2)).replace('.', ',')} %"
+
+    # Data COM do último provento
+    data_com = df_infos_ativo['data_com'].values
+    if len(data_com) != 0:
+        data_com = data_com[0]
+        data_com = data_com[8:10] + '/' + data_com[5:7] + '/' + data_com[0:4]
+    else:
+        data_com = ''
+
+    # Payout
+    payout = df_infos_ativo['payout'].values
+    payout = payout[0] if len(payout) != 0 else ''
+    payout = str(100*round(payout, 2)).replace('.', ',') + ' %'
+
+    # ESG total
+    esg_total = df_infos_ativo['esg_total_atual'].values
+    esg_total = esg_total[0] if len(esg_total) != 0 else -1
+    esg_total_min = df_infos_ativo['esg_total_min'].values
+    esg_total_min = esg_total_min[0] if len(esg_total_min) != 0 else 0
+    esg_total_max = df_infos_ativo['esg_total_max'].values
+    esg_total_max = esg_total_max[0] if len(esg_total_max) != 0 else 1
+    esg_total_med = df_infos_ativo['esg_total_med'].values
+    esg_total_med = esg_total_med[0] if len(esg_total_med) != 0 else -1
+
+    fig, ax = plt.subplots(figsize=(1.5, 0.3))
+    p1 = ax.barh(0, [esg_total_min, esg_total_max])
+    p2 = ax.scatter(esg_total_med - esg_total_min, 0, color = 'orange', marker = '|', s=150)
+    p3 = ax.scatter(esg_total - esg_total_min, 0, color='white', marker=6, s=260)
+    ax.axis('off')
+    fig.patch.set_facecolor('#F0F0F0')
+
+    img_data = io.BytesIO()
+    plt.savefig(img_data, format='png')
+    plt.close()
+    img_data.seek(0)
+    esg_total_img = 'data:image/png;base64,' + base64.b64encode(img_data.read()).decode('ascii')
+
+    # ESG ambiental
+    esg_ambiental = df_infos_ativo['esg_ambiental_atual'].values
+    esg_ambiental = esg_ambiental[0] if len(esg_ambiental) != 0 else -1
+    esg_ambiental_min = df_infos_ativo['esg_ambiental_min'].values
+    esg_ambiental_min = esg_ambiental_min[0] if len(esg_ambiental_min) != 0 else 0
+    esg_ambiental_max = df_infos_ativo['esg_ambiental_max'].values
+    esg_ambiental_max = esg_ambiental_max[0] if len(esg_ambiental_max) != 0 else 1
+    esg_ambiental_med = df_infos_ativo['esg_ambiental_med'].values
+    esg_ambiental_med = esg_ambiental_med[0] if len(esg_ambiental_med) != 0 else -1
+
+    fig, ax = plt.subplots(figsize=(1.5, 0.3))
+    p1 = ax.barh(0, [esg_ambiental_min, esg_ambiental_max])
+    p2 = ax.scatter(esg_ambiental_med - esg_ambiental_min, 0, color = 'orange', marker = '|', s=150)
+    p3 = ax.scatter(esg_ambiental - esg_ambiental_min, 0, color='white', marker=6, s=260)
+    ax.axis('off')
+    fig.patch.set_facecolor('#F0F0F0')
+
+    img_data = io.BytesIO()
+    plt.savefig(img_data, format='png')
+    plt.close()
+    img_data.seek(0)
+    esg_ambiental_img = 'data:image/png;base64,' + base64.b64encode(img_data.read()).decode('ascii')
+
+    # ESG social
+    esg_social = df_infos_ativo['esg_social_atual'].values
+    esg_social = esg_social[0] if len(esg_social) != 0 else -1
+    esg_social_min = df_infos_ativo['esg_social_min'].values
+    esg_social_min = esg_social_min[0] if len(esg_social_min) != 0 else 0
+    esg_social_max = df_infos_ativo['esg_social_max'].values
+    esg_social_max = esg_social_max[0] if len(esg_social_max) != 0 else 1
+    esg_social_med = df_infos_ativo['esg_social_med'].values
+    esg_social_med = esg_social_med[0] if len(esg_social_med) != 0 else -1
+
+    fig, ax = plt.subplots(figsize=(1.5, 0.3))
+    p1 = ax.barh(0, [esg_social_min, esg_social_max])
+    p2 = ax.scatter(esg_social_med - esg_social_min, 0, color = 'orange', marker = '|', s=150)
+    p3 = ax.scatter(esg_social - esg_social_min, 0, color='white', marker=6, s=260)
+    ax.axis('off')
+    fig.patch.set_facecolor('#F0F0F0')
+
+    img_data = io.BytesIO()
+    plt.savefig(img_data, format='png')
+    plt.close()
+    img_data.seek(0)
+    esg_social_img = 'data:image/png;base64,' + base64.b64encode(img_data.read()).decode('ascii')
+
+    # ESG governanca
+    esg_governanca = df_infos_ativo['esg_governanca_atual'].values
+    esg_governanca = esg_governanca[0] if len(esg_governanca) != 0 else -1
+    esg_governanca_min = df_infos_ativo['esg_governanca_min'].values
+    esg_governanca_min = esg_governanca_min[0] if len(esg_governanca_min) != 0 else 0
+    esg_governanca_max = df_infos_ativo['esg_governanca_max'].values
+    esg_governanca_max = esg_governanca_max[0] if len(esg_governanca_max) != 0 else 1
+    esg_governanca_med = df_infos_ativo['esg_governanca_med'].values
+    esg_governanca_med = esg_governanca_med[0] if len(esg_governanca_med) != 0 else -1
+
+    fig, ax = plt.subplots(figsize=(1.5, 0.3))
+    p1 = ax.barh(0, [esg_governanca_min, esg_governanca_max])
+    p2 = ax.scatter(esg_governanca_med - esg_governanca_min, 0, color = 'orange', marker = '|', s=150)
+    p3 = ax.scatter(esg_governanca - esg_governanca_min, 0, color='white', marker=6, s=260)
+    ax.axis('off')
+    fig.patch.set_facecolor('#F0F0F0')
+
+    img_data = io.BytesIO()
+    plt.savefig(img_data, format='png')
+    plt.close()
+    img_data.seek(0)
+    esg_governanca_img = 'data:image/png;base64,' + base64.b64encode(img_data.read()).decode('ascii')
+    
+    # Polêmicas
+    polemicas = df_infos_ativo['polemicas'].values
+    polemicas = polemicas[0]
+    if polemicas != None:
+        polemicas = polemicas.replace('[', '').replace(']', '')
+        polemicas = polemicas.split(',')
+        polemicas = '<=> ' + '<=> '.join(polemicas)
+    else:
+        polemicas = ''
+    
+    return (nome, data, preco, f"assets/{logo}", setor, industria, valor_mercado, funcionarios, dividendos, data_com, payout, esg_total_img, esg_ambiental_img, esg_social_img, esg_governanca_img, polemicas)
