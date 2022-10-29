@@ -7,8 +7,6 @@ import datetime
 from dateutil.relativedelta import relativedelta
 import os, base64, io
 import urllib.request
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -40,17 +38,17 @@ layout = dbc.Col([
                 dbc.Label([html.Img(src='/assets/logo_padrao.png',
                                     id='infos_logo',
                                     alt='Avatar',
-                                    style={'height': '80px', 'width': '80px'})
+                                    style={'height': '100%', 'width': '100%'})
                                     ], style={'background-color': 'transparent', 'border-color': 'transparent'}),
-            ], width=5),
+            ], width=7),
             dbc.Col([
                 html.Label("",
                            id='infos_data_preco',
-                           style={'font-size': 18, 'width': '100%', 'textAlign': 'center'}),
+                           style={'font-size': 18, 'width': '100%'}),
                 html.Label("",
                            id='infos_preco',
-                           style={'font-size': 18, 'width': '100%', 'textAlign': 'center'}),
-            ], width=7)
+                           style={'font-size': 18, 'width': '100%'}),
+            ], width=5)
         ]),
         html.Hr(),
     ]),
@@ -167,7 +165,10 @@ def popula_selecao_ativos(data):
     return (lista_ativos, None)
 
 @app.callback(
-    Output('store_infos', 'data'),
+    [
+        Output('store_infos', 'data'),
+        Output('store_ativo_selecionado', 'data')
+    ],
     Input('infos_selecao_ativo', 'value'),
     State('store_infos', 'data')
 )
@@ -308,7 +309,7 @@ def atualiza_dados_info(ativo, dados_info):
         df_infos = pd.concat([df_infos, df_append_info]).reset_index(drop=True)
         df_infos.to_csv('df_infos.csv')
 
-    return df_infos.to_dict()
+    return (df_infos.to_dict(), ativo)
 
 @app.callback(
     [

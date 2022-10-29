@@ -15,6 +15,8 @@ content = html.Div(id="page-content")
 
 app.layout = dbc.Container(children=[
 # Componentes para armazenar dados -----------------------------
+    dcc.Store(id='store_ativo_selecionado',
+              data=ativo_selecionado),
     dcc.Store(id='store_ativos',
               data=lista_de_ativos),
     dcc.Store(id='store_infos',

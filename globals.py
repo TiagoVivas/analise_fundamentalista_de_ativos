@@ -1,6 +1,9 @@
 import pandas as pd
 import os
 
+# Ativo selecionado --------------------------------------------------------
+ativo_selecionado = ''
+
 # Lista de ativos ----------------------------------------------------------
 if ('ativos.txt' in os.listdir()):
     with open('ativos.txt') as f:
