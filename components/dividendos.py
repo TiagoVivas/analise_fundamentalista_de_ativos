@@ -4,7 +4,6 @@ from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
 from datetime import datetime, timedelta
-import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 

@@ -21,6 +21,8 @@ app.layout = dbc.Container(children=[
               data=lista_de_ativos),
     dcc.Store(id='store_infos',
               data=df_infos.to_dict()),
+    dcc.Store(id='store_financas',
+              data=df_financas.to_dict()),
 
 # Componentes de layout da página ------------------------------
     dbc.Row([

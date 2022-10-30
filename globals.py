@@ -51,3 +51,26 @@ else:
 
     df_infos = pd.DataFrame(estrutura_dados_infos)
     df_infos.to_csv('df_infos.csv')
+
+# Dataframe com valores de finanças --------------------------------------
+if ('df_financas.csv' in os.listdir()):
+    df_financas = pd.read_csv('df_financas.csv', index_col=0)
+else:
+    estrutura_dados_financas = {
+        'chave': [],
+        'ativo': [],
+        'tipo_periodo': [],
+        'data': [],
+        'receita_total': [],
+        'custo_produtos_vendidos': [],
+        'despesas_adm_vendas': [],
+        'pesquisa_desenvolvimento': [],
+        'despesas_juros': [],
+        'ebit': [],
+        'lucro_bruto': [],
+        'lucro_antes_impostos': [],
+        'lucro_liquido': []
+    }
+
+    df_financas = pd.DataFrame(estrutura_dados_financas)
+    df_financas.to_csv('df_financas.csv')
