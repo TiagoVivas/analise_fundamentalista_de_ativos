@@ -157,10 +157,16 @@ def atualiza_dados_balanco(filtro_periodo, dados_balanco, ativo):
             tipo_periodo.append(filtro_periodo)
             datas.append(data.date().strftime("%Y-%m-%d"))
             ativo_circulante.append(df_bal_novo.loc['Total Current Assets', data])
-            aplicacoes.append(df_bal_novo.loc['Short Term Investments', data])
+            if 'Short Term Investments' in df_bal_novo.columns:
+                aplicacoes.append(df_bal_novo.loc['Short Term Investments', data])
+            else:
+                aplicacoes.append(0)
             caixa.append(df_bal_novo.loc['Cash', data])
             contas_a_receber.append(df_bal_novo.loc['Net Receivables', data])
-            estoque.append(df_bal_novo.loc['Inventory', data])
+            if 'Inventory' in df_bal_novo.columns:
+                estoque.append(df_bal_novo.loc['Inventory', data])
+            else:
+                estoque.append(0)
             ativo_nao_circulante.append(df_bal_novo.loc['Total Assets', data] - df_bal_novo.loc['Total Current Assets', data])
             investimentos.append(df_bal_novo.loc['Long Term Investments', data])
             imobilizado.append(df_bal_novo.loc['Property Plant Equipment', data])
