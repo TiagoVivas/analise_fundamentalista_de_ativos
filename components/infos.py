@@ -410,16 +410,16 @@ def mostra_valores_infos(dados_info, ativo):
     # ESG total
     esg_total = df_infos_ativo['esg_total_atual'].values
     esg_total = esg_total[0] if len(esg_total) != 0 else -1
-    esg_total = -1 if (esg_total == '') | (math.isnan(esg_total)) else -1
+    esg_total = -1 if (esg_total == '') | (math.isnan(esg_total)) else esg_total
     esg_total_min = df_infos_ativo['esg_total_min'].values
     esg_total_min = esg_total_min[0] if len(esg_total_min) != 0 else 0
-    esg_total_min = -1 if (esg_total_min == '') | (math.isnan(esg_total_min)) else 0
+    esg_total_min = -1 if (esg_total_min == '') | (math.isnan(esg_total_min)) else esg_total_min
     esg_total_max = df_infos_ativo['esg_total_max'].values
     esg_total_max = esg_total_max[0] if len(esg_total_max) != 0 else 1
-    esg_total_max = -1 if (esg_total_max == '') | (math.isnan(esg_total_max)) else 1
+    esg_total_max = -1 if (esg_total_max == '') | (math.isnan(esg_total_max)) else esg_total_max
     esg_total_med = df_infos_ativo['esg_total_med'].values
     esg_total_med = esg_total_med[0] if len(esg_total_med) != 0 else -1
-    esg_total_med = -1 if (esg_total_med == '') | (math.isnan(esg_total_med)) else -1
+    esg_total_med = -1 if (esg_total_med == '') | (math.isnan(esg_total_med)) else esg_total_med
 
     fig, ax = plt.subplots(figsize=(1.5, 0.3))
     p1 = ax.barh(0, [esg_total_min, esg_total_max])
@@ -437,16 +437,16 @@ def mostra_valores_infos(dados_info, ativo):
     # ESG ambiental
     esg_ambiental = df_infos_ativo['esg_ambiental_atual'].values
     esg_ambiental = esg_ambiental[0] if len(esg_ambiental) != 0 else -1
-    esg_ambiental = -1 if (esg_ambiental == '') | (math.isnan(esg_ambiental)) else -1
+    esg_ambiental = -1 if (esg_ambiental == '') | (math.isnan(esg_ambiental)) else esg_ambiental
     esg_ambiental_min = df_infos_ativo['esg_ambiental_min'].values
     esg_ambiental_min = esg_ambiental_min[0] if len(esg_ambiental_min) != 0 else 0
-    esg_ambiental_min = -1 if (esg_ambiental_min == '') | (math.isnan(esg_ambiental_min)) else 0
+    esg_ambiental_min = -1 if (esg_ambiental_min == '') | (math.isnan(esg_ambiental_min)) else esg_ambiental_min
     esg_ambiental_max = df_infos_ativo['esg_ambiental_max'].values
     esg_ambiental_max = esg_ambiental_max[0] if len(esg_ambiental_max) != 0 else 1
-    esg_ambiental_max = -1 if (esg_ambiental_max == '') | (math.isnan(esg_ambiental_max)) else 1
+    esg_ambiental_max = -1 if (esg_ambiental_max == '') | (math.isnan(esg_ambiental_max)) else esg_ambiental_max
     esg_ambiental_med = df_infos_ativo['esg_ambiental_med'].values
     esg_ambiental_med = esg_ambiental_med[0] if len(esg_ambiental_med) != 0 else -1
-    esg_ambiental_med = -1 if (esg_ambiental_med == '') | (math.isnan(esg_ambiental_med)) else -1
+    esg_ambiental_med = -1 if (esg_ambiental_med == '') | (math.isnan(esg_ambiental_med)) else esg_ambiental_med
 
     fig, ax = plt.subplots(figsize=(1.5, 0.3))
     p1 = ax.barh(0, [esg_ambiental_min, esg_ambiental_max])
@@ -464,16 +464,16 @@ def mostra_valores_infos(dados_info, ativo):
     # ESG social
     esg_social = df_infos_ativo['esg_social_atual'].values
     esg_social = esg_social[0] if len(esg_social) != 0 else -1
-    esg_social = -1 if (esg_social == '') | (math.isnan(esg_social)) else -1
+    esg_social = -1 if (esg_social == '') | (math.isnan(esg_social)) else esg_social
     esg_social_min = df_infos_ativo['esg_social_min'].values
     esg_social_min = esg_social_min[0] if len(esg_social_min) != 0 else 0
-    esg_social_min = -1 if (esg_social_min == '') | (math.isnan(esg_social_min)) else 0
+    esg_social_min = -1 if (esg_social_min == '') | (math.isnan(esg_social_min)) else esg_social_min
     esg_social_max = df_infos_ativo['esg_social_max'].values
     esg_social_max = esg_social_max[0] if len(esg_social_max) != 0 else 1
-    esg_social_max = -1 if (esg_social_max == '') | (math.isnan(esg_social_max)) else 1
+    esg_social_max = -1 if (esg_social_max == '') | (math.isnan(esg_social_max)) else esg_social_max
     esg_social_med = df_infos_ativo['esg_social_med'].values
     esg_social_med = esg_social_med[0] if len(esg_social_med) != 0 else -1
-    esg_social_med = -1 if (esg_social_med == '') | (math.isnan(esg_social_med)) else -1
+    esg_social_med = -1 if (esg_social_med == '') | (math.isnan(esg_social_med)) else esg_social_med
 
     fig, ax = plt.subplots(figsize=(1.5, 0.3))
     p1 = ax.barh(0, [esg_social_min, esg_social_max])
@@ -491,16 +491,16 @@ def mostra_valores_infos(dados_info, ativo):
     # ESG governanca
     esg_governanca = df_infos_ativo['esg_governanca_atual'].values
     esg_governanca = esg_governanca[0] if len(esg_governanca) != 0 else -1
-    esg_governanca = -1 if (esg_governanca == '') | (math.isnan(esg_governanca)) else -1
+    esg_governanca = -1 if (esg_governanca == '') | (math.isnan(esg_governanca)) else esg_governanca
     esg_governanca_min = df_infos_ativo['esg_governanca_min'].values
     esg_governanca_min = esg_governanca_min[0] if len(esg_governanca_min) != 0 else 0
-    esg_governanca_min = -1 if (esg_governanca_min == '') | (math.isnan(esg_governanca_min)) else 0
+    esg_governanca_min = -1 if (esg_governanca_min == '') | (math.isnan(esg_governanca_min)) else esg_governanca_min
     esg_governanca_max = df_infos_ativo['esg_governanca_max'].values
     esg_governanca_max = esg_governanca_max[0] if len(esg_governanca_max) != 0 else 1
-    esg_governanca_max = -1 if (esg_governanca_max == '') | (math.isnan(esg_governanca_max)) else 1
+    esg_governanca_max = -1 if (esg_governanca_max == '') | (math.isnan(esg_governanca_max)) else esg_governanca_max
     esg_governanca_med = df_infos_ativo['esg_governanca_med'].values
     esg_governanca_med = esg_governanca_med[0] if len(esg_governanca_med) != 0 else -1
-    esg_governanca_med = -1 if (esg_governanca_med == '') | (math.isnan(esg_governanca_med)) else -1
+    esg_governanca_med = -1 if (esg_governanca_med == '') | (math.isnan(esg_governanca_med)) else esg_governanca_med
 
     fig, ax = plt.subplots(figsize=(1.5, 0.3))
     p1 = ax.barh(0, [esg_governanca_min, esg_governanca_max])
