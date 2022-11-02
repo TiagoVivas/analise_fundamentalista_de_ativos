@@ -74,7 +74,7 @@ layout = dbc.Col([
     Output('financas_filtro', 'value'),
     Input('store_ativo_selecionado', 'data')
 )
-def popula_filtro_periodo(ativo):
+def popula_filtro_periodo_financas(ativo):
     if (ativo is None) or (ativo == ''): # Pula primeira execução ao iniciar aplicação
         raise PreventUpdate
 
@@ -105,7 +105,6 @@ def atualiza_dados_financas(filtro_periodo, dados_financas, ativo):
 
     atualizar = ultima_data_armazenada != ultima_data_divulgada
     if atualizar:
-        print('Atualizando...')
         acao_yf = yf.Ticker(ativo + '.SA')
         if filtro_periodo == 'Trimestral':
             df_fin_novo = acao_yf.quarterly_financials

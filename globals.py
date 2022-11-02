@@ -74,3 +74,31 @@ else:
 
     df_financas = pd.DataFrame(estrutura_dados_financas)
     df_financas.to_csv('df_financas.csv')
+
+# Dataframe com valores de balanço --------------------------------------
+if ('df_balanco.csv' in os.listdir()):
+    df_balanco = pd.read_csv('df_balanco.csv', index_col=0)
+else:
+    estrutura_dados_balanco = {
+        'chave': [],
+        'ativo': [],
+        'tipo_periodo': [],
+        'data': [],
+        'ativo_circulante': [],
+        'aplicacoes': [],
+        'caixa': [],
+        'contas_a_receber': [],
+        'estoque': [],
+        'ativo_nao_circulante': [],
+        'investimentos': [],
+        'imobilizado': [],
+        'intangivel': [],
+        'passivo_circulante': [],
+        'dividas_curto_prazo': [],
+        'fornecedores': [],
+        'passivo_nao_circulante': [],
+        'dividas_longo_prazo': []
+    }
+
+    df_balanco = pd.DataFrame(estrutura_dados_balanco)
+    df_balanco.to_csv('df_balanco.csv')
