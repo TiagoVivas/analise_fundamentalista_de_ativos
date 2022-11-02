@@ -29,10 +29,10 @@ dados = {
           "  Fornecedores",
           "PASSIVO NÃO CIRCULANTE",
           "  Dívidas de longo prazo"],
-    'Q4': [i for i in range(15)],
-    'Q3': [i for i in range(15)],
-    'Q2': [i for i in range(15)],
-    'Q1': [i for i in range(15)],
+    'Q4': ['' for i in range(15)],
+    'Q3': ['' for i in range(15)],
+    'Q2': ['' for i in range(15)],
+    'Q1': ['' for i in range(15)],
 }
 df_balanco = pd.DataFrame(dados)
 
