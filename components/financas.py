@@ -71,14 +71,24 @@ layout = dbc.Col([
 
 # ============ Callbacks ============ #
 @app.callback(
-    Output('store_financas', 'data'),
-    [
-        Input('store_ativo_selecionado', 'data'),
-        Input('financas_filtro', 'value')
-    ],
-    State('store_financas', 'data'),
+    Output('financas_filtro', 'value'),
+    Input('store_ativo_selecionado', 'data')
 )
-def atualiza_dados_financas(ativo, filtro_periodo, dados_financas):
+def popula_filtro_periodo(ativo):
+    if (ativo is None) or (ativo == ''): # Pula primeira execução ao iniciar aplicação
+        raise PreventUpdate
+
+    return 'Trimestral'
+
+@app.callback(
+    Output('store_financas', 'data'),
+    Input('financas_filtro', 'value'),
+    [
+        State('store_financas', 'data'),
+        State('store_ativo_selecionado', 'data')
+    ]
+)
+def atualiza_dados_financas(filtro_periodo, dados_financas, ativo):
     if (ativo is None) or (ativo == ''): # Pula primeira execução ao iniciar aplicação
         raise PreventUpdate
 
