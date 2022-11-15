@@ -211,8 +211,15 @@ def atualiza_dados_info(ativo, dados_info):
             valor_mercado = ''
         if type(dados_logo) == dict:
             logo = dados_logo['logo_url'] if 'logo_url' in dados_logo.keys() else ''
+            total_cash = dados_logo['totalCash'] if 'totalCash' in dados_logo.keys() else 0
+            total_cash_per_share = dados_logo['totalCashPerShare'] if 'totalCashPerShare' in dados_logo.keys() else 0
+            try:
+                quantidade_acoes = round(total_cash / total_cash_per_share if total_cash_per_share != 0 else 0, 0)
+            except:
+                quantidade_acoes = 0
         else:
             logo = ''
+            quantidade_acoes = 0
         if type(dados_asset_profile) == dict:
             setor = dados_asset_profile['sector'] if 'sector' in dados_asset_profile.keys() else ''
             industria = dados_asset_profile['industry'] if 'industry' in dados_asset_profile.keys() else ''
@@ -282,6 +289,7 @@ def atualiza_dados_info(ativo, dados_info):
             'data': [data],
             'nome': [nome],
             'logo': [logo],
+            'quantidade_acoes': [quantidade_acoes],
             'preco': [preco],
             'setor': [setor],
             'industria': [industria],

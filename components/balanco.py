@@ -12,6 +12,7 @@ import yfinance as yf
 import yahooquery as yq
 
 from app import app
+from globals import *
 
 dados = {
     ' ': ["ATIVO CIRCULANTE",
@@ -347,21 +348,3 @@ def atualiza_grafico_financas(celula_selecionada, ativo, dados_balanco, filtro_p
     fig.update_layout(paper_bgcolor='rgba(0, 0, 0, 0)', plot_bgcolor='rgba(0, 0, 0, 0)')
 
     return fig
-
-"""
-Ativo Circulante > Total Current Assets
-    Aplicações financeiras > Short Term Investments
-    Caixa > Cash
-    Contas a receber > Net Receivables
-    Estoque > Inventory
-Ativo Não Circulante > Total Assets - Total Current Assets
-    Investimentos > Long Term Investments
-    Imobilizado > Property Plant Equipment
-    Intangível > Intangible Assets
-
-Passivo Circulante > Total Current Liabilities
-    Dívidas de curto prazo > Short Long Term Debt
-    Fornecedores > Accounts Payable
-Passivo Não Circulante > Total Liab - Total Current Liabilities
-    Dívidas de longo prazo > Long Term Debt
-"""

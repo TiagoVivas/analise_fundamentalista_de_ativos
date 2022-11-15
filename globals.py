@@ -21,6 +21,7 @@ else:
         'data': [],
         'nome': [],
         'logo': [],
+        'quantidade_acoes': [],
         'preco': [],
         'setor': [],
         'industria': [],
@@ -102,3 +103,24 @@ else:
 
     df_balanco = pd.DataFrame(estrutura_dados_balanco)
     df_balanco.to_csv('df_balanco.csv')
+
+# Dataframe com valores de indicadores --------------------------------------
+if ('df_indicadores.csv' in os.listdir()):
+    df_indicadores = pd.read_csv('df_indicadores.csv', index_col=0)
+else:
+    estrutura_dados_indicadores = {
+        'ativo': [],
+        'data': [],
+        'p_l': [],
+        'p_vp': [],
+        'lpa': [],
+        'divida_liquida_pl': [],
+        'pl_ativos': [],
+        'passivos_ativos': [],
+        'liquidez_corrente': [],
+        'margem_bruta': [],
+        'margem_liquida': []
+    }
+
+    df_indicadores = pd.DataFrame(estrutura_dados_indicadores)
+    df_indicadores.to_csv('df_indicadores.csv')
